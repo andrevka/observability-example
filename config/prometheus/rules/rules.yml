@@ -1,5 +1,5 @@
 groups:
-  - name: app1
+  - name: apps
     rules:
       - alert: "During the last minute more than one ExceptionWhileObserved has been thrown"
         expr: increase({__name__=~"[^(http)].*count",error="ExceptionWhileObserved"}[1m]) > 0
@@ -9,13 +9,35 @@ groups:
           value: '{{ $value }}'
         annotations:
           summary: "ExceptionWhileObserved has been thrown more than once in the last minute. See https://confluence.organization.com/monitoring/alerts/ExceptionWhileObserved for more information"
-  - name: app2
-    rules:
-      - alert: Ssl exception occured
-        expr: increase(last_ssl_exception_timestamp[10m]) > 0
-        for: 5s
+      - alert: "Not enough threads to support the amount of users"
+        # in case multiple nodes avg(user_sessions) can be used to convert it to a single value
+        expr: avg(user_sessions) / sum(jvm_threads_states_threads) > 10
+        for: 10s
         labels:
-          severity: page
+          severity: warning
           value: '{{ $value }}'
         annotations:
-          summary: "PAASUKE_SSL_EXCEPTION_OCCURED - Some application(s) have encountered certificate/ssl related errors"
+          summary: "Not enough threads to support the amount of users. See https://confluence.organization.com/monitoring/alerts/Not+enough+threads+to+support+the+amount+of+users for more information"
+      - alert: "High request rate"
+        expr: rate(http_server_requests_seconds_count[5m]) > 1
+        for: 1m
+        labels:
+          severity: high
+        annotations:
+          summary:  "Application receiving too many requests. See https://confluence.organization.com/monitoring/alerts/HighRequestRate for more information"
+      - alert: "JVM heap space will reach 90% capacity in 10 minutes"
+        expr: predict_linear(jvm_memory_committed_bytes{area = 'heap'}[5m], 10m) / jvm_memory_max_bytes{area = 'heap'} > 0.9
+        for: 1m
+        labels:
+          severity: high
+        annotations:
+          summary:  "JVM heap space will reach 90% capacity in 10 minutes. See https://confluence.organization.com/monitoring/alerts/LowJvmHeapSpace for more information"
+  - name: Standard alerts
+    rules:
+      - alert: "Target Down"
+        expr: up == 0
+        for: 10s
+        labels:
+          severity: high
+        annotations:
+          summary: "A target is unreachable. See https://confluence.organization.com/monitoring/alerts/TargetDown for more information"
