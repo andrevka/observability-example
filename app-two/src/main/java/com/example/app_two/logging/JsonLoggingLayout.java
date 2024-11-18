@@ -7,19 +7,19 @@ import java.util.Map;
 
 public class JsonLoggingLayout extends JsonLayout {
 
-    private String applicationName;
+	private String applicationName;
 
-    public String getApplicationName() {
-        return applicationName;
-    }
+	public String getApplicationName() {
+		return applicationName;
+	}
 
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
-    }
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
 
-    @Override
-    protected void addCustomDataToJsonMap(Map<String, Object> map, ILoggingEvent event) {
-        map.put("application", applicationName);
-    }
+	@Override
+	protected void addCustomDataToJsonMap(Map<String, Object> map, ILoggingEvent event) {
+		map.put("application", applicationName);
+	}
 
 }

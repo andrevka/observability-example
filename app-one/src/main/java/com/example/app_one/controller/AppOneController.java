@@ -12,66 +12,66 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AppOneController {
 
-    private final AppOneService appOneService;
+	private final AppOneService appOneService;
 
-    @GetMapping(value = "/successfulCall")
-    void successfulCall() {
-        log.info("Endpoint successfulCall called");
-        appOneService.successfulCall();
-    }
+	@GetMapping(value = "/successfulCall")
+	void successfulCall() {
+		log.info("Endpoint successfulCall called");
+		appOneService.successfulCall();
+	}
 
-    @GetMapping("/exceptionThrown")
-    void exceptionThrown() {
-        log.info("Endpoint exceptionThrown called");
-        appOneService.exceptionThrown();
-    }
+	@GetMapping("/exceptionThrown")
+	void exceptionThrown() {
+		log.info("Endpoint exceptionThrown called");
+		appOneService.exceptionThrown();
+	}
 
-    @GetMapping("/incrementCounter")
-    void incrementCounter() {
-        log.info("Endpoint incrementCounter called");
-        appOneService.incrementCounter();
-    }
+	@GetMapping("/incrementCounter")
+	void incrementCounter() {
+		log.info("Endpoint incrementCounter called");
+		appOneService.incrementCounter();
+	}
 
-    @GetMapping("/observed/{status}")
-    void observed(Status status) {
-        log.info("Endpoint observed called");
-        appOneService.observed(status);
-    }
+	@GetMapping("/observed/{status}")
+	void observed(Status status) {
+		log.info("Endpoint observed called");
+		appOneService.observed(status);
+	}
 
-    @GetMapping("/manuallyConfiguredRestTemplate")
-    void appTwoRestTemplateWithManualSettings() {
-        log.info("Endpoint appTwoRestTemplateWithManualSettings called");
-        appOneService.appTwoRestTemplateWithManualSettings();
-    }
+	@GetMapping("/manuallyConfiguredRestTemplate")
+	void appTwoRestTemplateWithManualSettings() {
+		log.info("Endpoint appTwoRestTemplateWithManualSettings called");
+		appOneService.appTwoRestTemplateWithManualSettings();
+	}
 
-    @GetMapping("/appTwoRestTemplateWithoutObservationRegistry")
-    void appTwoRestTemplateWithoutObservationRegistry() {
-        log.info("Endpoint appTwoRestTemplateWithoutObservationRegistry called");
-        appOneService.appTwoRestTemplateWithoutObservationRegistry();
-    }
+	@GetMapping("/appTwoRestTemplateWithoutObservationRegistry")
+	void appTwoRestTemplateWithoutObservationRegistry() {
+		log.info("Endpoint appTwoRestTemplateWithoutObservationRegistry called");
+		appOneService.appTwoRestTemplateWithoutObservationRegistry();
+	}
 
-    @GetMapping("/runOnDifferentThreadWontPropagateTrace")
-    void runOnDifferentThreadWontPropagateTrace() {
-        log.info("Endpoint runOnDifferentThread called");
-        appOneService.runOnDifferentThreadWontPropagateTrace();
-    }
+	@GetMapping("/runOnDifferentThreadWontPropagateTrace")
+	void runOnDifferentThreadWontPropagateTrace() {
+		log.info("Endpoint runOnDifferentThread called");
+		appOneService.runOnDifferentThreadWontPropagateTrace();
+	}
 
-    @GetMapping("/runOnDifferentThread")
-    void runOnDifferentThread() {
-        log.info("Endpoint runOnDifferentThread called");
-        appOneService.runOnDifferentThread();
-    }
+	@GetMapping("/runOnDifferentThread")
+	void runOnDifferentThread() {
+		log.info("Endpoint runOnDifferentThread called");
+		appOneService.runOnDifferentThread();
+	}
 
-    @GetMapping("/runOnDifferentThreadWrappedExecutorService")
-    void runOnDifferentThreadExecutorServiceAdapter() {
-        log.info("Endpoint runOnDifferentThreadWrappedExecutorService called");
-        appOneService.runOnDifferentThreadWrappedExecutorService();
-    }
+	@GetMapping("/runOnDifferentThreadWrappedExecutorService")
+	void runOnDifferentThreadExecutorServiceAdapter() {
+		log.info("Endpoint runOnDifferentThreadWrappedExecutorService called");
+		appOneService.runOnDifferentThreadWrappedExecutorService();
+	}
 
-    @GetMapping("/setActiveUsers/{activeUsers}")
-    void setActiveUsers(Integer activeUsers) {
-        log.info("Endpoint setActiveUsers called");
-        appOneService.setActiveUsers(activeUsers);
-    }
+	@GetMapping("/setActiveUsers/{activeUsers}")
+	void setActiveUsers(Integer activeUsers) {
+		log.info("Endpoint setActiveUsers called");
+		appOneService.setActiveUsers(activeUsers);
+	}
 
 }

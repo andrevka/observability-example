@@ -11,26 +11,23 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class ClientConfiguration {
 
-    @Bean
-    RestTemplate appTwoRestTemplate(RestTemplateBuilder restTemplateBuilder, @Value("${app-two-url}") String appTwoUrl) {
-        return restTemplateBuilder.rootUri(appTwoUrl)
-                .build();
-    }
+	@Bean
+	RestTemplate appTwoRestTemplate(RestTemplateBuilder restTemplateBuilder,
+			@Value("${app-two-url}") String appTwoUrl) {
+		return restTemplateBuilder.rootUri(appTwoUrl).build();
+	}
 
-    @Bean
-    RestTemplate appTwoRestTemplateWithManualSettings(@Value("${app-two-url}") String appTwoUrl, ObservationRegistry observationRegistry) {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .rootUri(appTwoUrl)
-                .build();
-        restTemplate.setObservationRegistry(observationRegistry);
-        return restTemplate;
-    }
+	@Bean
+	RestTemplate appTwoRestTemplateWithManualSettings(@Value("${app-two-url}") String appTwoUrl,
+			ObservationRegistry observationRegistry) {
+		RestTemplate restTemplate = new RestTemplateBuilder().rootUri(appTwoUrl).build();
+		restTemplate.setObservationRegistry(observationRegistry);
+		return restTemplate;
+	}
 
-    @Bean
-    RestTemplate appTwoRestTemplateWithoutObservationRegistry(@Value("${app-two-url}") String appTwoUrl) {
-        return new RestTemplateBuilder()
-                .rootUri(appTwoUrl)
-                .build();
-    }
+	@Bean
+	RestTemplate appTwoRestTemplateWithoutObservationRegistry(@Value("${app-two-url}") String appTwoUrl) {
+		return new RestTemplateBuilder().rootUri(appTwoUrl).build();
+	}
 
 }

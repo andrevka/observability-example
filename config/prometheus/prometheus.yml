@@ -13,13 +13,15 @@ scrape_configs:
       - targets:
           - "localhost:9090"
   - job_name: "app1"
+    metrics_path: /internal/actuator/prometheus
     static_configs:
       - targets:
           - "app1:8080"
   - job_name: "app2"
+    metrics_path: /internal/actuator/prometheus
     static_configs:
       - targets:
-          - "app2:8081"
+          - "app2:8080"
 
 alerting:
   alertmanagers:

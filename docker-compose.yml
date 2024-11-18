@@ -123,6 +123,8 @@ services:
       - 8080:8080
     command:
       - '--spring.profiles.active=docker'
+    networks:
+      - project
   app2:
     container_name: app2
     build:
@@ -133,6 +135,8 @@ services:
       - "application_logs:/logs/"
     command:
       - '--spring.profiles.active=docker'
+    networks:
+      - project
 
 networks:
   project:

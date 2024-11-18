@@ -13,41 +13,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AppTwoController {
 
-    private final AppTwoService appTwoService;
+	private final AppTwoService appTwoService;
 
-    @GetMapping("/one")
-    void endpointOne() {
-        log.info("Endpoint one called");
-        appTwoService.method1();
-    }
+	@GetMapping("/one")
+	void endpointOne() {
+		log.info("Endpoint one called");
+		appTwoService.method1();
+	}
 
-    @GetMapping("/two")
-    void endpointTwo() {
-        log.info("Endpoint two called");
-        appTwoService.method2();
-    }
+	@GetMapping("/two")
+	void endpointTwo() {
+		log.info("Endpoint two called");
+		appTwoService.method2();
+	}
 
-    @GetMapping("/four")
-    void endpointFour() {
-        log.info("Endpoint four called");
-        appTwoService.method4();
-    }
+	@GetMapping("/four")
+	void endpointFour() {
+		log.info("Endpoint four called");
+		appTwoService.method4();
+	}
 
-    @GetMapping("/five")
-    void endpointFive() {
-        log.info("Endpoint five called");
-        appTwoService.method5();
-    }
+	@GetMapping("/five")
+	void endpointFive() {
+		log.info("Endpoint five called");
+		appTwoService.method5();
+	}
 
-    @GetMapping("/six")
-    void endpointSix() {
-        log.info("Endpoint six called");
-        appTwoService.method6();
-    }
+	@GetMapping("/six")
+	void endpointSix() {
+		log.info("Endpoint six called");
+		appTwoService.method6();
+	}
 
-    @GetMapping("/runOnDifferentThread")
-    void runOnDifferentThread() {
-        log.info("Endpoint runOnDifferentThread called");
-    }
+	@GetMapping("/runOnDifferentThread")
+	void runOnDifferentThread() {
+		log.info("Endpoint runOnDifferentThread called");
+	}
 
 }

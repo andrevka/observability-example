@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSessionsRepository {
 
-    @Getter
-    private Integer activeUsers;
+	@Getter
+	private Integer activeUsers;
 
-    public void setActiveUsers(Integer activeUsers) {
-        this.activeUsers = activeUsers;
-    }
+	public void setActiveUsers(Integer activeUsers) {
+		this.activeUsers = activeUsers;
+	}
 
 }

@@ -1,1 +1,3 @@
+server.port: 8080
+
 logging.config: /etc/app2/logback.xml
