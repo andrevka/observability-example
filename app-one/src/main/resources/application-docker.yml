@@ -1,0 +1,3 @@
+logging.config: /etc/app1/logback.xml
+
+app-two-url: http://app2:8081/two

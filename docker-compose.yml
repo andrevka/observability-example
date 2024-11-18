@@ -1,0 +1,141 @@
+---
+version: '3'
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v3.0.0
+    restart: always
+    volumes:
+      - ./config/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.external-url=localhost:3000'
+    ports:
+      - 9090:9090
+    networks:
+      - project
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:v0.27.0
+    restart: always
+    volumes:
+      - alertmanager_data:/data
+      - .config/alertmanager:/etc/alertmanager
+    ports:
+      - 9093:9093
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=https://localhost:9090'
+    networks:
+      - project
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:11.3.0-security-01-ubuntu
+    restart: always
+    user: grafana
+    environment:
+      - "GF_SECURITY_ADMIN_PASSWORD=admin"
+      - "GF_DEFAULT_FORCE_MIGRATION=true"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - /etc/mon/grafana/dashboards:/var/lib/grafana/dashboards
+    ports:
+      - 3002:3000
+    networks:
+      - project
+  mongo:
+    image: mongo:4.0
+    container_name: mongo
+    networks:
+      - project
+  rocket:
+    image: rocket.chat:7.0.0
+    container_name: rocket
+    environment:
+      - ROOT_URL=http://localhost
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+    ports:
+      - 3001:3000
+    networks:
+      - project
+    depends_on:
+      mongo:
+        condition: service_started
+  opensearch: # This is also the hostname of the container within the Docker network (i.e. https://opensearch-node1/)
+    image: opensearchproject/opensearch:2.18.0 # Specifying the latest available image - modify if you want a specific version
+    container_name: opensearch
+    environment:
+      - cluster.name=opensearch-cluster # Name the cluster
+      - node.name=opensearch # Name the node that will run in this container
+      - discovery.seed_hosts=opensearch # Nodes to look for when discovering the cluster
+      - cluster.initial_cluster_manager_nodes=opensearch # Nodes eligible to serve as cluster manager
+      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=A1_%aabbsfk##    # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and later
+    ulimits:
+      memlock:
+        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data # Creates volume called opensearch-data1 and mounts it to the container
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Performance Analyzer
+    networks:
+      - project # All of the containers will join the same Docker bridge network
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.18.0 # Make sure the version of opensearch-dashboards matches the version of opensearch installed on other nodes
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601 # Map host port 5601 to container port 5601
+    expose:
+      - "5601" # Expose port 5601 for web access to OpenSearch Dashboards
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
+    networks:
+      - project
+  logstash:
+    container_name: logstash
+    image: logstash:7.17.25
+    volumes:
+      - "application_logs:/logs"
+  app1:
+    container_name: app1
+    build:
+      dockerfile: Dockerfile
+      context: app-one/
+    volumes:
+      - "./config/app1/:/etc/app1"
+      - "application_logs:/logs/"
+    ports:
+      - 8080:8080
+    command:
+      - '--spring.profiles.active=docker'
+  app2:
+    container_name: app2
+    build:
+      dockerfile: Dockerfile
+      context: app-two/
+    volumes:
+      - "./config/app2/:/etc/app2"
+      - "application_logs:/logs/"
+    command:
+      - '--spring.profiles.active=docker'
+
+networks:
+  project:
+
+volumes:
+  alertmanager_data:
+  grafana_data:
+  prometheus_data:
+  opensearch-data:
+  application_logs:

@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: "{{ project }}"
+
+rule_files:
+  - rules/rules.yml
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets:
+          - "localhost:9090"
+  - job_name: "app1"
+    static_configs:
+      - targets:
+          - "app1:8080"
+  - job_name: "app2"
+    static_configs:
+      - targets:
+          - "app2:8081"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093

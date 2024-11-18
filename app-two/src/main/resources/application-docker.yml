@@ -1,0 +1,1 @@
+logging.config: /etc/app2/logback.xml

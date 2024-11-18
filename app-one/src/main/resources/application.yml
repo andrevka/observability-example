@@ -1,0 +1,28 @@
+spring:
+  application.name: app-one
+
+server.port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      enabled: true
+      base-path: /internal/actuator
+      exposure:
+        include:
+          - info
+          - health
+          - prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId:-},%X{spanId:-}]"

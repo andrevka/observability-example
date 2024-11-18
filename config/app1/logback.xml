@@ -1,0 +1,34 @@
+<configuration>
+
+    <appender name="FILEOUT" class="ch.qos.logback.core.FileAppender">
+        <layout class="com.example.app_one.logging.JsonLoggingLayout">
+            <jsonFormatter
+                    class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>false</prettyPrint>
+            </jsonFormatter>
+            <appendLineSeparator>true</appendLineSeparator>
+            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS Z</timestampFormat>
+            <applicationName>app-one</applicationName>
+        </layout>
+        <file>/logs/app-one.log</file>
+    </appender>
+    <appender name="SYSOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="com.example.app_one.logging.JsonLoggingLayout">
+            <jsonFormatter
+                    class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>false</prettyPrint>
+            </jsonFormatter>
+            <appendLineSeparator>true</appendLineSeparator>
+            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS Z</timestampFormat>
+            <applicationName>app-one</applicationName>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="SYSOUT"/>
+        <appender-ref ref="FILEOUT"/>
+    </root>
+
+    <logger name="com.example" level="DEBUG"/>
+
+</configuration>

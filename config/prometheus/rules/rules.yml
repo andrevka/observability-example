@@ -1,0 +1,22 @@
+groups:
+  - name: app1
+    rules:
+      - alert: "Last getRepresenteeDelegateMandatesQuery query response had unexpected response"
+        expr: round(last_representee_delegate_mandates_query_answer_correct) == 0
+        for: 10s
+        labels:
+          severity: warning
+          value: '{{ $value }}'
+        annotations:
+          summary: "PAASUKE_PROMETHEUS_ALERT_ORACLE_PARROT_GET_REPRESENTEE_DELEGATE_MANDATES_UNEXPECTED_RESPONSE - Xroad query is not healthy"
+          description: "Last getRepresenteeDelegateMandatesQuery query had unexpected response"
+  - name: app2
+    rules:
+      - alert: Ssl exception occured
+        expr: increase(last_ssl_exception_timestamp[10m]) > 0
+        for: 5s
+        labels:
+          severity: page
+          value: '{{ $value }}'
+        annotations:
+          summary: "PAASUKE_SSL_EXCEPTION_OCCURED - Some application(s) have encountered certificate/ssl related errors"
