@@ -12,6 +12,10 @@ scrape_configs:
     static_configs:
       - targets:
           - "localhost:9090"
+  - job_name: "prometheus-push-gateway"
+    static_configs:
+      - targets:
+          - "prometheus-push-gateway:9091"
   - job_name: "app1"
     metrics_path: /internal/actuator/prometheus
     static_configs:

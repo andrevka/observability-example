@@ -74,4 +74,9 @@ public class AppOneController {
 		appOneService.setActiveUsers(activeUsers);
 	}
 
+	@GetMapping("/badLog")
+	void badLog() {
+		log.info("Here is a log containing Bad log and something more...");
+	}
+
 }

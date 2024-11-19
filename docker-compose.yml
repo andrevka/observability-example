@@ -155,6 +155,11 @@ services:
       - ./config/opensearch-configurer/init.sh:/etc/init.sh
     networks:
       - project
+  prometheus-push-gateway:
+    image: "prom/pushgateway:v1.10.0"
+    container_name: "prometheus-push-gateway"
+    networks:
+    - project
   logstash:
     container_name: logstash
     image: opensearchproject/logstash-oss-with-opensearch-output-plugin:7.16.2

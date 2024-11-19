@@ -51,17 +51,27 @@ if [ ! -f bad_logs_monitor ]; then
                       "logstash-all-logs-*"
                     ],
                     "query": {
+                      "size": 1,
+                      "sort": [{"application_timestamp": "desc"}],
+                      "script_fields": {
+                        "unix_timestamp": {
+                          "script": {
+                            "lang": "painless",
+                            "source": "doc[\"application_timestamp\"].value.toInstant().toEpochMilli() / 1000"
+                          }
+                        }
+                      },
                       "query": {
                         "bool": {
                           "filter": [
                             {
                               "query_string": {
-                                "query": "*Bad log*"
+                                "query": "\"*Bad log*\""
                               }
                             },
                             {
                               "range": {
-                                "@timestamp": {
+                                "application_timestamp": {
                                   "from": "{{period_end}}||-2m",
                                   "to": "{{period_end}}",
                                   "include_lower": true,
@@ -95,7 +105,7 @@ if [ ! -f bad_logs_monitor ]; then
                       "name": "notify-prometheus",
                       "destination_id": "prometheus-push-gateway",
                       "message_template": {
-                        "source": "bad_logs_count {{ ctx.results.0.hits.total.value }}\n"
+                        "source": "bad_logs_last_timestamp {{ ctx.results.0.hits.hits.0.fields.unix_timestamp.0 }}\n"
                       }
                     }
                   ]

@@ -19,6 +19,12 @@ This is a project for demonstrating how monitoring can be setup in a tech stack 
 * http://localhost:3001/ - rocket.chat, login with user myuser and password myuser
   * Additionally you can login with username admin and password admin and go to http://localhost:3001/admin/integrations to examine how the integration with alert manager works
 
+## Opensearch
+
+when you are using the java applications they might produce logs which have fields which are not automatically configured at startup
+for example the traceid field will not be available in filters
+You need to go to opensearch frontpage by clicking the logo at the top right > click manage > click index patterns > click logstash-all-logs-* > click the refresh icon at the top of the card
+
 ## Scenarios
 
 1. verify alerts reach your preferred channel (rocket.chat #Monitoring)

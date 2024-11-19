@@ -26,6 +26,12 @@ groups:
           severity: high
         annotations:
           summary: "JVM heap space will reach 90% capacity in 10 minutes. See https://confluence.organization.com/monitoring/alerts/LowJvmHeapSpace for more information"
+      - alert: "A very bad log was discovered"
+        expr: time() - bad_logs_last_timestamp < 600
+        labels:
+          severity: high
+        annotations:
+          summary: "Application logged a critical failure. See https://confluence.organization.com/monitoring/alerts/BadLog for more information"
   - name: Standard alerts
     rules:
       - alert: "Target Down"
