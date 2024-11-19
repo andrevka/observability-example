@@ -83,7 +83,7 @@ services:
   rocket-configurer:
     container_name: rocket-configurer
     build:
-      context: rocket-configurer/
+      context: helper/
       dockerfile: Dockerfile
     volumes:
       - ./config/alertmanager/alertmanager.yml:/etc/alertmanager.yml
