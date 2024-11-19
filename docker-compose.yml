@@ -34,7 +34,7 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--storage.path=/alertmanager'
-      - '--web.external-url=https://localhost:9090'
+      - '--web.external-url=https://localhost:9093'
     networks:
       - project
   grafana:
