@@ -143,6 +143,18 @@ services:
       OPENSEARCH_HOSTS: '["https://opensearch:9200"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
     networks:
       - project
+  opensearch-configurer:
+    build:
+      context: helper
+      dockerfile: Dockerfile
+    container_name: opensearch-configurer
+    depends_on:
+      opensearch:
+        condition: service_started
+    volumes:
+      - ./config/opensearch-configurer/init.sh:/etc/init.sh
+    networks:
+      - project
   logstash:
     container_name: logstash
     image: opensearchproject/logstash-oss-with-opensearch-output-plugin:7.16.2
