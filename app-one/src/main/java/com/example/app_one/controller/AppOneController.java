@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -77,6 +80,14 @@ public class AppOneController {
 	@GetMapping("/badLog")
 	void badLog() {
 		log.info("Here is a log containing Bad log and something more...");
+	}
+
+	@GetMapping("/allocateHeapMemory")
+	void allocateHeapMemory() {
+		List<String> list = IntStream.range(1, 1000000)
+				.boxed()
+				.map(String::valueOf).toList();
+		String.join("", list);
 	}
 
 }
