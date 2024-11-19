@@ -87,7 +87,7 @@ if [ ! -f monitoring_integration_created ]; then
               "username": "admin",
               "channel": "#Monitoring",
               "scriptEnabled": true,
-              "script": "class Script { process_incoming_request({ request }) { console.log(request.content.groupLabels.alertname); return { content:{ text: request.content.groupLabels.alertname } }; }}",
+              "script": "class Script { process_incoming_request({ request }) { console.log(request.content.groupLabels.alertname); return { content:{ text: request.content.status + \": \" + request.content.groupLabels.alertname } }; }}",
               "name": "monitoring-incoming-messages",
               "enabled": true
             }'
