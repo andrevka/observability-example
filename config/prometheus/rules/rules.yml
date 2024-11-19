@@ -19,13 +19,13 @@ groups:
         labels:
           severity: high
         annotations:
-          summary:  "Application receiving too many requests. See https://confluence.organization.com/monitoring/alerts/HighRequestRate for more information"
+          summary: "Application receiving too many requests. See https://confluence.organization.com/monitoring/alerts/HighRequestRate for more information"
       - alert: "JVM heap space will reach 90% capacity in 10 minutes"
         expr: predict_linear(jvm_memory_committed_bytes{area = 'heap'}[5m], 10m) / jvm_memory_max_bytes{area = 'heap'} > 0.9
         labels:
           severity: high
         annotations:
-          summary:  "JVM heap space will reach 90% capacity in 10 minutes. See https://confluence.organization.com/monitoring/alerts/LowJvmHeapSpace for more information"
+          summary: "JVM heap space will reach 90% capacity in 10 minutes. See https://confluence.organization.com/monitoring/alerts/LowJvmHeapSpace for more information"
   - name: Standard alerts
     rules:
       - alert: "Target Down"
