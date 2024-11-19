@@ -25,7 +25,10 @@ services:
     restart: always
     volumes:
       - alertmanager_data:/data
-      - .config/alertmanager:/etc/alertmanager
+      - ./config/alertmanager:/etc/alertmanager
+    depends_on:
+      rocket-configurer:
+        condition: service_completed_successfully
     ports:
       - 9093:9093
     command:
@@ -49,24 +52,61 @@ services:
       - 3002:3000
     networks:
       - project
-  mongo:
-    image: mongo:4.0
-    container_name: mongo
-    networks:
-      - project
-  rocket:
+  rocketchat:
     image: rocket.chat:7.0.0
     container_name: rocket
+    restart: always
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.rocketchat.rule: Host(`${DOMAIN:-}`)
+      traefik.http.routers.rocketchat.tls: "true"
+      traefik.http.routers.rocketchat.entrypoints: https
+      traefik.http.routers.rocketchat.tls.certresolver: le
     environment:
-      - ROOT_URL=http://localhost
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      MONGO_URL: "mongodb://mongodb:27017/rocketchat?replicaSet=rs0"
+      MONGO_OPLOG_URL: "mongodb://mongodb:27017/local?replicaSet=-rs0"
+      ROOT_URL: http://localhost:3001
+      PORT: 3000
+      DEPLOY_METHOD: docker
+      OVERWRITE_SETTING_Show_Setup_Wizard: "false"
+      ADMIN_USERNAME: admin
+      ADMIN_PASS: admin
+    depends_on:
+      mongodb:
+        condition: service_started
+    expose:
+      - 3000
     ports:
-      - 3001:3000
+      - "3001:3000"
     networks:
       - project
-    depends_on:
-      mongo:
-        condition: service_started
+  rocket-configurer:
+    container_name: rocket-configurer
+    build:
+      context: rocket-configurer/
+      dockerfile: Dockerfile
+    volumes:
+      - ./config/alertmanager/alertmanager.yml:/etc/alertmanager.yml
+      - ./config/rocket-configurer/init.sh:/etc/init.sh
+    networks:
+      - project
+  mongodb:
+    image: docker.io/bitnami/mongodb:6.0
+    container_name: mongodb
+    restart: always
+    volumes:
+      - mongodb_data:/bitnami/mongodb
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: rs0
+      MONGODB_PORT_NUMBER: 27017
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 27017
+      MONGODB_ADVERTISED_HOSTNAME: mongodb
+      MONGODB_ENABLE_JOURNAL: "true"
+      ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - project
   opensearch: # This is also the hostname of the container within the Docker network (i.e. https://opensearch-node1/)
     image: opensearchproject/opensearch:2.18.0 # Specifying the latest available image - modify if you want a specific version
     container_name: opensearch
@@ -147,3 +187,4 @@ volumes:
   prometheus_data:
   opensearch-data:
   application_logs:
+  mongodb_data:
