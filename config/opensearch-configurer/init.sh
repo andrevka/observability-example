@@ -110,7 +110,7 @@ fi
 
 if [ ! -f index_pattern ]; then
   for i in {0..20};
-    do curl --request POST -u dashboards:dashboards -v --insecure --url 'http://opensearch-dashboards:5601/api/saved_objects/index-pattern' -H 'Content-Type: application/json' -H 'osd-version: 2.18.0' -H 'osd-xsrf: osd-fetch' --data-raw '{"attributes":{"title":"logstash-all-logs-*","timeFieldName":"@timestamp"}}' && break || sleep 10;
+    do curl --request POST -u dashboards:dashboards -v --insecure --url 'http://opensearch-dashboards:5601/api/saved_objects/index-pattern' -H 'Content-Type: application/json' -H 'osd-version: 2.18.0' -H 'osd-xsrf: osd-fetch' --data-raw '{"attributes":{"title":"logstash-all-logs-*","timeFieldName":"application_timestamp"}}' && break || sleep 10;
   done;
   if [ $? != 0 ]; then
       exit 100
