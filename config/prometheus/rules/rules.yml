@@ -26,6 +26,12 @@ groups:
           severity: high
         annotations:
           summary: "JVM heap space will reach 90% capacity in 10 minutes. See https://confluence.organization.com/monitoring/alerts/LowJvmHeapSpace for more information"
+      - alert: "JVM heap space is over 90% capacity"
+        expr: jvm_memory_committed_bytes{area = 'heap'} / jvm_memory_max_bytes{area = 'heap'} > 0.9
+        labels:
+          severity: high
+        annotations:
+          summary: "JVM heap space is over 90% capacity. See https://confluence.organization.com/monitoring/alerts/LowJvmHeapSpace for more information"
       - alert: "A very bad log was discovered"
         expr: time() - bad_logs_last_timestamp < 600
         labels:

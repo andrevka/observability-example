@@ -11,7 +11,6 @@ import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.task.support.ExecutorServiceAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,7 +55,7 @@ public class AppOneService {
 	}
 
 	@Observed(name = "observed", contextualName = "observed")
-	public void observed(Status status) {
+	public void iAmTheObservedMethod(Status status) {
 		log.info("Observed");
 		switch (status) {
 			case FAIL -> throw new ExceptionWhileObserved();

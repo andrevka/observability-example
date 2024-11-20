@@ -38,7 +38,7 @@ public class AppOneController {
 	@GetMapping("/observed/{status}")
 	void observed(Status status) {
 		log.info("Endpoint observed called");
-		appOneService.observed(status);
+		appOneService.iAmTheObservedMethod(status);
 	}
 
 	@GetMapping("/manuallyConfiguredRestTemplate")
@@ -84,9 +84,7 @@ public class AppOneController {
 
 	@GetMapping("/allocateHeapMemory")
 	void allocateHeapMemory() {
-		List<String> list = IntStream.range(1, 1000000)
-				.boxed()
-				.map(String::valueOf).toList();
+		List<String> list = IntStream.range(1, 10000000).boxed().map(String::valueOf).toList();
 		String.join("", list);
 	}
 
